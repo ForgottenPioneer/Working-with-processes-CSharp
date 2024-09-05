@@ -16,10 +16,44 @@ class Program
                 Console.WriteLine("Status: Running");
 
         }
-        int ProcessIDin = Convert.ToInt32(Console.ReadLine());
-        Process ProcessId = Process.GetProcessById(ProcessIDin);
-            ProcessId.Kill();
+        static void KillProcess(int id)
+        {
+            Process processForKill = Process.GetProcessById(id);
 
+            processForKill.Kill();
+
+            Logger.Logging("Процесс убит.");
+        }
+
+        static void StartProgram(string programName)
+        {
+            Process.Start(programName);
+
+            Logger.Logging("Процесс запущен.");
+        }
+
+        static void PrintAllProcesses(Process[] processes)
+        {
+            foreach (Process process in processes)
+            {
+                Console.WriteLine($"Name: {process.ProcessName}  ID: {process.Id}  memory footprint: {process.PagedMemorySize64 / 1024 / 1024} MB status: {process.Responding}");
+
+                Logger.Logging("Выведены все запущенные процессы.");
+            }
+        }
+    }
+
+    class Logger
+    {
+        public static void Logging(string message)
+        {
+            string logPath = "process_log.txt";
+
+            using (StreamWriter sw = new StreamWriter(logPath, true))
+            {
+                sw.WriteLine($"{DateTime.Now} {message}");
+            }
+        }
     }
 }
 
