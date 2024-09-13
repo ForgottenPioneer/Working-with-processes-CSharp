@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 
 class Program
@@ -6,15 +6,44 @@ class Program
     static void Main()
     {
         Process[] processes = Process.GetProcesses();
-
-        foreach (Process process in processes)
+        bool forwhile = true;
+        while (forwhile)
         {
-            Console.Write("Имя: " + process.ProcessName + ", ID: " + process.Id + ", RAM: " + process.PagedMemorySize64 / 8 / 1024 / 1024 + "MB ");
-            if (process.ProcessName.Length == 0)
-                Console.WriteLine("Status: Stopped");
-            else
-                Console.WriteLine("Status: Running");
+            Console.WriteLine("Какое действие вы хотите выполнить?\n1. Завершить процесс.\n2. Запустить процесс\n3. Вывести все процессы.\n4. Выйти из программы.");
 
+            string choice = Console.ReadLine();
+            switch (choice)
+            {
+                case "1":
+                    {
+                        PrintAllProcesses(processes);
+                        Console.WriteLine("Какой из процессов вы хотите завершить(Ввести ID программы)?");
+                        int a = Convert.ToInt32(Console.ReadLine());
+                        KillProcess(a);
+                    }
+                    continue;
+                case "2":
+                    {
+                        Console.WriteLine("Введите название программы для запуска.");
+                        string b = Console.ReadLine();
+                        StartProgram(b);
+                    }
+                    continue;
+                case "3":
+                    {
+                        PrintAllProcesses(processes);
+                    }
+                    continue;
+                    case "4":
+                    {
+                        Console.WriteLine("ББ");
+                        forwhile = false;
+                        break;
+                    }
+                default:
+                    Console.WriteLine("Invalid choice. Choose num of case.");
+                    break;
+            }
         }
         static void KillProcess(int id)
         {
